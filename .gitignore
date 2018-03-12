@@ -1,6 +1,7 @@
 
-// Compiled class file
+// Compiled files
 *.class
+out/
 
 // Log file
 *.log
@@ -8,3 +9,5 @@
 //IntelliJ
 .idea/
 *.iml
+
+
