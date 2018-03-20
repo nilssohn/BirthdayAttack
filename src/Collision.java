@@ -11,10 +11,11 @@ import java.util.HashMap;
 public class Collision{
 
     int outputSize;
+    int depth = 100;
     String message1;
     String message2;
-    HashMap<Long, String> hashMessage1 = new HashMap<Long, String>();
-    HashMap<Long, String> hashMessage2 = new HashMap<Long, String>();
+    static HashMap<Long, String> hashMessage1 = new HashMap<Long, String>();
+    static HashMap<Long, String> hashMessage2 = new HashMap<Long, String>();
 
     public Collision(int outputSize, String message1, String message2) {
         this.outputSize = outputSize;
@@ -28,41 +29,46 @@ public class Collision{
      * that have the same hash output
      */
     public String[] collisionSearch(){
-        String[] collisionPair = new String[2];
-        boolean collisionNotFound = true;
+        String[] collisionPair;
 
-        StringBuilder m1 = new StringBuilder();
-        StringBuilder m2 = new StringBuilder();
-        Long hash1;
-        Long hash2;
-        m1.append(message1);
-        m2.append(message2);
+        collisionPair = mapHash("");
+        return collisionPair;
+    }
 
-        while (collisionNotFound) {
-            hash1 = hash(m1.toString());
-            if (!hashMessage2.containsKey(hash1)) {
-                hashMessage1.put(hash1, m1.toString());
-                m1.append(" ");
-            } else {
-                collisionPair[0] = m1.toString();
-                collisionPair[1] = hashMessage2.get(hash1);
-                collisionNotFound = false;
-                continue;
-            }
-
-            hash2 = hash(m2.toString());
-            if (!hashMessage1.containsKey(hash2)) {
-                hashMessage2.put(hash2, m2.toString());
-                m2.append(" ");
-            } else {
-                collisionPair[0] = hashMessage1.get(hash2);
-                collisionPair[1] = m2.toString();
-                 
-                collisionNotFound = false;
-            }
+    private String[] mapHash(String concatStr) {
+        if (concatStr.length() >= 100) {
+            return new String[2];
         }
 
-        return collisionPair;
+//        System.out.println(concatStr + ":");
+
+        String[] collisionPair = new String[2];
+        String message = message1 + concatStr;
+        long hash = hash(message);
+        if (!hashMessage2.containsKey(hash)) {
+            hashMessage1.put(hash, message);
+        } else {
+            collisionPair[0] = message;
+            collisionPair[1] = hashMessage2.get(hash);
+        }
+
+        mapHash(concatStr + " ");
+
+
+
+        message = message2 + concatStr;
+        hash = hash(message2 + concatStr);
+        if (!hashMessage1.containsKey(hash)) {
+            hashMessage2.put(hash, message);
+        } else {
+            collisionPair[0] = hashMessage1.get(hash);
+            collisionPair[1] = message;
+        }
+
+
+        mapHash(concatStr + "\t");
+
+        return new String[2];
     }
 
     /**
