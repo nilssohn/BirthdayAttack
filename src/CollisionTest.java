@@ -5,7 +5,7 @@ public class CollisionTest {
         String x2 = "Transfer $1000 to Oscar.";
 
         //The first argument is the size of hash output: try 40 later.
-        Collision coll = new Collision(8, x1, x2);
+        Collision coll = new Collision(40, x1, x2);
         double start = System.currentTimeMillis();
         
         String[] collisionFound = coll.collisionSearch();

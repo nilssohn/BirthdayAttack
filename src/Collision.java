@@ -11,11 +11,12 @@ import java.util.HashMap;
 public class Collision{
 
     int outputSize;
-    int depth = 100;
+    int count = 0;
     String message1;
     String message2;
-    static HashMap<Long, String> hashMessage1 = new HashMap<Long, String>();
-    static HashMap<Long, String> hashMessage2 = new HashMap<Long, String>();
+
+    HashMap<Long, String> hashMessage1 = new HashMap<Long, String>();
+    HashMap<Long, String> hashMessage2 = new HashMap<Long, String>();
 
     public Collision(int outputSize, String message1, String message2) {
         this.outputSize = outputSize;
@@ -36,39 +37,40 @@ public class Collision{
     }
 
     private String[] mapHash(String concatStr) {
-        if (concatStr.length() >= 100) {
-            return new String[2];
+        if (concatStr.length() >= 25) {
+            return null;
         }
 
-//        System.out.println(concatStr + ":");
-
-        String[] collisionPair = new String[2];
         String message = message1 + concatStr;
         long hash = hash(message);
+
         if (!hashMessage2.containsKey(hash)) {
             hashMessage1.put(hash, message);
         } else {
-            collisionPair[0] = message;
-            collisionPair[1] = hashMessage2.get(hash);
+            return new String[] {message, hashMessage2.get(hash)};
         }
-
-        mapHash(concatStr + " ");
-
-
 
         message = message2 + concatStr;
         hash = hash(message2 + concatStr);
         if (!hashMessage1.containsKey(hash)) {
             hashMessage2.put(hash, message);
         } else {
-            collisionPair[0] = hashMessage1.get(hash);
-            collisionPair[1] = message;
+            return new String[] {hashMessage1.get(hash), message};
         }
 
+        String[] collisionPair = mapHash(concatStr + " ");
 
-        mapHash(concatStr + "\t");
+        if (collisionPair != null) {
+            return collisionPair;
+        }
 
-        return new String[2];
+        collisionPair = mapHash(concatStr + "\t");
+
+        if (collisionPair != null) {
+            return collisionPair;
+        }
+
+        return null;
     }
 
     /**
