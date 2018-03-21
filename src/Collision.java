@@ -10,13 +10,12 @@ import java.util.HashMap;
  */
 public class Collision{
 
-    int outputSize;
-    int count = 0;
-    String message1;
-    String message2;
+    private int outputSize;
+    private String message1;
+    private String message2;
 
-    HashMap<Long, String> hashMessage1 = new HashMap<Long, String>();
-    HashMap<Long, String> hashMessage2 = new HashMap<Long, String>();
+    private HashMap<Long, String> hashMessage1 = new HashMap<Long, String>();
+    private HashMap<Long, String> hashMessage2 = new HashMap<Long, String>();
 
     public Collision(int outputSize, String message1, String message2) {
         this.outputSize = outputSize;
